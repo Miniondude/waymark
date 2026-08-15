@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Waymark — offline routes</title>
+<meta name="theme-color" content="#26332A" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icon-192.png" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <div class="brand">
+      <span class="brand-mark">◭</span>
+      <div class="brand-text">
+        <h1>Waymark</h1>
+        <p id="statusline">Checking storage…</p>
+      </div>
+    </div>
+    <button id="historyBtn" class="icon-btn" aria-label="Open history">☰ Log</button>
+  </header>
+
+  <main id="mapWrap">
+    <div id="map"></div>
+
+    <div id="readout" class="hidden">
+      <div class="stat">
+        <span class="stat-label">Distance</span>
+        <span class="stat-value" id="statDistance">0.00<small>km</small></span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Time</span>
+        <span class="stat-value" id="statTime">00:00</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Pace</span>
+        <span class="stat-value" id="statPace">—<small>/km</small></span>
+      </div>
+    </div>
+
+    <div id="drawBanner" class="banner hidden">
+      Drawing a route — tap the map to add points, then finish.
+    </div>
+  </main>
+
+  <footer id="controls">
+    <div id="idleControls" class="control-row">
+      <button id="startRunBtn" class="btn btn-primary">
+        <span class="btn-icon">▶</span> Start run
+      </button>
+      <button id="drawRouteBtn" class="btn btn-secondary">
+        <span class="btn-icon">✎</span> Draw route
+      </button>
+    </div>
+
+    <div id="recordingControls" class="control-row hidden">
+      <button id="pauseRunBtn" class="btn btn-secondary">Pause</button>
+      <button id="stopRunBtn" class="btn btn-danger">Finish run</button>
+    </div>
+
+    <div id="drawingControls" class="control-row hidden">
+      <button id="undoPointBtn" class="btn btn-secondary">Undo point</button>
+      <button id="finishDrawBtn" class="btn btn-primary">Finish route</button>
+      <button id="cancelDrawBtn" class="btn btn-ghost">Cancel</button>
+    </div>
+  </footer>
+
+</div>
+
+<!-- Save modal -->
+<div id="saveModal" class="modal hidden">
+  <div class="modal-card">
+    <h2 id="saveModalTitle">Save run</h2>
+    <label class="field">
+      <span>Name</span>
+      <input id="saveNameInput" type="text" placeholder="Morning loop" />
+    </label>
+    <label class="field">
+      <span>Type</span>
+      <select id="saveTypeSelect">
+        <option value="run">Run</option>
+        <option value="hike">Hike</option>
+        <option value="bike">Bike</option>
+      </select>
+    </label>
+    <div id="saveSummary" class="save-summary"></div>
+    <div class="modal-actions">
+      <button id="discardBtn" class="btn btn-ghost">Discard</button>
+      <button id="confirmSaveBtn" class="btn btn-primary">Save to log</button>
+    </div>
+  </div>
+</div>
+
+<!-- History drawer -->
+<div id="historyDrawer" class="drawer hidden">
+  <div class="drawer-header">
+    <h2>Your log</h2>
+    <button id="closeHistoryBtn" class="icon-btn" aria-label="Close log">✕</button>
+  </div>
+  <div id="historyEmpty" class="history-empty hidden">
+    Nothing logged yet.<br>Every run or route you save stays only on this device.
+  </div>
+  <ul id="historyList"></ul>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
